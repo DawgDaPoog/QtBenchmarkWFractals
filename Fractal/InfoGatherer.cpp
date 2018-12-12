@@ -13,11 +13,9 @@
 #include <string>
 #include <iomanip>
 #include <fstream>
-#include<cmath>
-#include<iomanip>
+#include <cmath>
+#include <iomanip>
 
-#include <intrin.h>
-#include <Windows.h>
 
 static ULARGE_INTEGER lastCPU, lastSysCPU, lastUserCPU;
 static int numProcessors;
@@ -71,7 +69,6 @@ void InfoGatherer::WriteTestsToFile()
 	outData << "CPU Hardware:" << ',' << CPUHardware << std::endl;
 	outData << "Number of Cores:" << ',' << NumberOfCores << std::endl;
 	outData << "Total RAM:" << ',' << TotalRAM << std::endl;
-
 
 	int TestNumber = 1;
 
@@ -207,8 +204,6 @@ void InfoGatherer::WriteTestsToFile()
 	outData.close();
 }
 	
-
-
 void InfoGatherer::TickInformationCheck()
 {
 	double CPUUsed = CPUCurrentlyUsed();
@@ -225,8 +220,6 @@ void InfoGatherer::TickInformationCheck()
 	InfoToInsert.VirtualMemUsage = virtMemUsedByMe;
 
 	InformationSet.at(InformationSet.size()-1).push_back(InfoToInsert);
-
-	std::cout << ReadCPUSpeedFromRegistry(1) << std::endl;
 }
 
 
@@ -239,6 +232,13 @@ const int InfoGatherer::GetNumberOfCores()
 void InfoGatherer::AddNewTestTimeTaken(double TimeTakenOnTest)
 {
 	TimeTakenVector.push_back(TimeTakenOnTest);
+}
+
+void InfoGatherer::WriteInitialInformation()
+{
+	std::cout << CPUHardware << std::endl;
+	std::cout << NumberOfCores << std::endl;
+	std::cout << TotalRAM << std::endl;
 }
 
 void InfoGatherer::FindHardwareInfo()
@@ -314,32 +314,4 @@ double InfoGatherer::CPUCurrentlyUsed()
 	return percent * 100;
 }
 
-DWORD InfoGatherer::ReadCPUSpeedFromRegistry(DWORD dwCPU)
-{
-	HKEY hKey;
-	DWORD dwSpeed;
-
-	// Get the key name
-	wchar_t szKey[256];
-	_snwprintf_s(szKey, sizeof(szKey) / sizeof(wchar_t),
-		L"HARDWARE\\DESCRIPTION\\System\\CentralProcessor\\%d\\", dwCPU);
-
-	// Open the key
-	if (RegOpenKeyEx(HKEY_LOCAL_MACHINE, szKey, 0, KEY_QUERY_VALUE, &hKey) != ERROR_SUCCESS)
-	{
-		return 0;
-	}
-
-	// Read the value
-	DWORD dwLen = 4;
-	if (RegQueryValueEx(hKey, L"~MHz", NULL, NULL, (LPBYTE)&dwSpeed, &dwLen) != ERROR_SUCCESS)
-	{
-		RegCloseKey(hKey);
-		return 0;
-	}
-
-	// Cleanup and return
-	RegCloseKey(hKey);
-	return dwSpeed;
-}
 

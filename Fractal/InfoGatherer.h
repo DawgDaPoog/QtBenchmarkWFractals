@@ -33,6 +33,8 @@ public:
 	const int GetNumberOfCores();
 
 	void AddNewTestTimeTaken(double TimeTakenOnTest);
+
+	void WriteInitialInformation();
 private:
 	std::vector<double> TimeTakenVector;
 	std::vector<std::string> ZoomsUsed;
@@ -47,7 +49,5 @@ private:
 	void FindHardwareInfo();
 	void initializeCPUSettings();
 	double CPUCurrentlyUsed();
-
-	DWORD ReadCPUSpeedFromRegistry(DWORD dwCPU);
 };
 

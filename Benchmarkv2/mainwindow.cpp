@@ -13,6 +13,23 @@ MainWindow::MainWindow(QWidget *parent) :
     testProcess = new QProcess(this);
     program = "E:\\cpp-git\\Big Projects\\Benchmarking using Fractals\\Fractal Debugging\\x64\\Debug\\Fractal.exe";
 
+    initInformationProcess = new QProcess(this);
+    QDir dir;
+    dir.filePath(QDir::currentPath());
+    QString path = dir.relativeFilePath("InitialInfoReader/Debug/InitialInfoReader.exe");
+
+    initInformationProcess->start(path,QStringList());
+
+    initInformationProcess->waitForFinished();
+
+    QString initoutput(initInformationProcess->readAllStandardOutput());
+
+    QRegExp rx("(\\t)"); //RegEx for '\t'
+    QStringList query = initoutput.split(rx);
+
+    ui->labelCPUHardware->setText(query[0]);
+    ui->labelAmountOfCores->setText(query[1]);
+    ui->labelAmountOfRAM->setText(query[2]);
 }
 
 MainWindow::~MainWindow()

@@ -25,6 +25,7 @@ private:
     Ui::MainWindow *ui;
 
    class QProcess* testProcess;
+   class QProcess* initInformationProcess;
    class QString program;
    class QString output;
 };

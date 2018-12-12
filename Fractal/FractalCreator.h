@@ -31,7 +31,6 @@ private:
 	bool _bGotFirstRange{ false };
 
 	void CalculateIterations(int AmountOfThreadsUsed);
-	void DrawFractal();
 	void WriteBitmap(std::string name);
 	void calculateRangeTotals();
 	int getRange(int iterations) const;
@@ -40,11 +39,10 @@ private:
 	
 	void join_all(std::vector<std::thread>& v);
 public:
-	void addColorRange(double rangeEnd, const RGB& rgb);
 	void addZoom(const Zoom& zoom);
 	void resetZoom();
 	FractalCreator(const int  WIDTH, const int HEIGHT);
 	virtual ~FractalCreator();
-	void run(std::string name, int AmountOfThreadsUsed);
+	void run(int AmountOfThreadsUsed);
 };
 
